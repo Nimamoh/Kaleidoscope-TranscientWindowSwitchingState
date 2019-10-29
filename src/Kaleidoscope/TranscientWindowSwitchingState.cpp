@@ -20,73 +20,50 @@
 namespace kaleidoscope {
 namespace plugin {
 
-// TranscientWindowSwitchingState
+bool TranscientWindowSwitchingState::disabled_ = true;
+// Press this key as long as this plugin is active
+kaleidoscope::Key keyToHold = Key_LeftAlt;
 
-// Member variables.
-bool TranscientWindowSwitchingState::disabled_ = false;
-
-// Basic plugin status functions.
-
-// Enable the plugin.
 void TranscientWindowSwitchingState::enable() {
   disabled_ = false;
 }
 
-// Disable the plugin.
 void TranscientWindowSwitchingState::disable() {
   disabled_ = true;
 }
 
-// Returns true if the plugin is enabled.
 bool TranscientWindowSwitchingState::active() {
   return !disabled_;
 }
 
 // Event handlers.
-
-// Runs once, when the plugin is initialized during Kaleidoscope.setup().
-EventHandlerResult TranscientWindowSwitchingState::onSetup() {
-  // Code goes here.
-  return EventHandlerResult::OK;
-}
-
-// Run as the first thing at the start of each cycle.
-EventHandlerResult TranscientWindowSwitchingState::beforeEachCycle() {
-  if(disabled_) {
-    return EventHandlerResult::OK;
-  }
-  // Code goes here.
-  return EventHandlerResult::OK;
-}
-
-// Run for every non-idle key, in each cycle the key isn't idle in. If a key
-// gets pressed, released, or is held, it is not considered idle, and this
-// event handler will run for it too.
 EventHandlerResult TranscientWindowSwitchingState::onKeyswitchEvent(Key &mapped_key, byte row,
                                               byte col, uint8_t key_state) {
-  if(disabled_) {
+  if(disabled_) 
     return EventHandlerResult::OK;
+
+  int i = 0;
+  bool check_stopping_keys = true;
+  while(check_stopping_keys) {
+
+    check_stopping_keys = disableOnReleaseKeys[0] != Key_NoKey; 
+
+    if (mapped_key == disableOnReleaseKeys[i] && keyToggledOff(key_state)) {
+      this->disable();
+      check_stopping_keys = false;
+    }
+
+    i++;
   }
-  // Code goes here.
+
   return EventHandlerResult::OK;
 }
 
-// Runs each cycle right before sending the various reports (keys pressed, mouse
-// events, etc) to the host.
 EventHandlerResult TranscientWindowSwitchingState::beforeReportingState() {
-  if(disabled_) {
+  if(disabled_) 
     return EventHandlerResult::OK;
-  }
-  // Code goes here.
-  return EventHandlerResult::OK;
-}
 
-// Runs at the very end of each cycle.
-EventHandlerResult TranscientWindowSwitchingState::afterEachCycle() {
-  if(disabled_) {
-    return EventHandlerResult::OK;
-  }
-  // Code goes here.
+  handleKeyswitchEvent(keyToHold, UNKNOWN_KEYSWITCH_LOCATION, IS_PRESSED | INJECTED);
   return EventHandlerResult::OK;
 }
 

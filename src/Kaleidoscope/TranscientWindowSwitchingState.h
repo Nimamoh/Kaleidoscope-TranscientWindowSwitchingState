@@ -19,23 +19,27 @@
 
 #include <Kaleidoscope.h>
 
+// Helper defining set of keys for disableOnReleaseKeys
+#define TWSS_KEYS(...) { __VA_ARGS__, Key_NoKey }
+
 namespace kaleidoscope {
 namespace plugin {
 
 class TranscientWindowSwitchingState : public kaleidoscope::Plugin {
   public:
+
+    // Disable plugin when these defined keys are released
+    const kaleidoscope::Key *disableOnReleaseKeys;
+
     // Basic plugin status functions.
     static void enable();
     static void disable();
     static bool active();
 
     // Event handlers. Delete what you don't need.
-    EventHandlerResult onSetup();
-    EventHandlerResult beforeEachCycle();
     EventHandlerResult onKeyswitchEvent(Key &mapped_key, byte row, byte col,
                                         uint8_t key_state);
     EventHandlerResult beforeReportingState();
-    EventHandlerResult afterEachCycle();
 
   private:
     static bool disabled_;
