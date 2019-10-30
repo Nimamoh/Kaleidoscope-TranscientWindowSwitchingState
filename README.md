@@ -2,7 +2,7 @@
 
 Have you tried to re-create 【<kbd>Alt</kbd>+<kbd>Tab</kbd>】 on keyboard.io (remapping it on 【<kbd>Fn</kbd>+<kbd>d</kbd>】 for instance)
 
-It is not easy.
+It is not easy. See [https://blog.nimamoh.net/keyboard-io-m01-alt-tab/](https://blog.nimamoh.net/keyboard-io-m01-alt-tab/) for a quick and dirty rationale.
 
 This plugin allows you to 
  - Enable a state where <kbd>Alt</kbd> key is hold. (The transcient window switching state)
