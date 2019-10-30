@@ -24,21 +24,15 @@ bool TranscientWindowSwitchingState::disabled_ = true;
 // Press this key as long as this plugin is active
 kaleidoscope::Key keyToHold = Key_LeftAlt;
 
-void TranscientWindowSwitchingState::enable() {
-  disabled_ = false;
-}
+void TranscientWindowSwitchingState::enable() { disabled_ = false; }
 
-void TranscientWindowSwitchingState::disable() {
-  disabled_ = true;
-}
+void TranscientWindowSwitchingState::disable() { disabled_ = true; }
 
-bool TranscientWindowSwitchingState::active() {
-  return !disabled_;
-}
+bool TranscientWindowSwitchingState::active() { return !disabled_; }
 
 // Event handlers.
-EventHandlerResult TranscientWindowSwitchingState::onKeyswitchEvent(Key &mapped_key, byte row,
-                                              byte col, uint8_t key_state) {
+EventHandlerResult TranscientWindowSwitchingState::onKeyswitchEvent(Key &mapped_key, KeyAddr key_addr
+                                                                                   , uint8_t key_state) {
   if(disabled_) 
     return EventHandlerResult::OK;
 
@@ -46,7 +40,7 @@ EventHandlerResult TranscientWindowSwitchingState::onKeyswitchEvent(Key &mapped_
   bool check_stopping_keys = true;
   while(check_stopping_keys) {
 
-    check_stopping_keys = disableOnReleaseKeys[0] != Key_NoKey; 
+    check_stopping_keys = disableOnReleaseKeys[i] != Key_NoKey; 
 
     if (mapped_key == disableOnReleaseKeys[i] && keyToggledOff(key_state)) {
       this->disable();
@@ -63,7 +57,7 @@ EventHandlerResult TranscientWindowSwitchingState::beforeReportingState() {
   if(disabled_) 
     return EventHandlerResult::OK;
 
-  handleKeyswitchEvent(keyToHold, UNKNOWN_KEYSWITCH_LOCATION, IS_PRESSED | INJECTED);
+  handleKeyswitchEvent(Key_LeftAlt, UNKNOWN_KEYSWITCH_LOCATION, IS_PRESSED | INJECTED);
   return EventHandlerResult::OK;
 }
 

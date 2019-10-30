@@ -25,9 +25,13 @@
 namespace kaleidoscope {
 namespace plugin {
 
+/**
+ * When enabled. hold the left alt key.
+ * Stop holding left alt key when disabled or
+ * when one of the disableOnReleaseKeys is released
+ */
 class TranscientWindowSwitchingState : public kaleidoscope::Plugin {
   public:
-
     // Disable plugin when these defined keys are released
     const kaleidoscope::Key *disableOnReleaseKeys;
 
@@ -37,7 +41,7 @@ class TranscientWindowSwitchingState : public kaleidoscope::Plugin {
     static bool active();
 
     // Event handlers. Delete what you don't need.
-    EventHandlerResult onKeyswitchEvent(Key &mapped_key, byte row, byte col,
+    EventHandlerResult onKeyswitchEvent(Key &mapped_key, KeyAddr key_addr,
                                         uint8_t key_state);
     EventHandlerResult beforeReportingState();
 
