@@ -57,7 +57,7 @@ EventHandlerResult TranscientWindowSwitchingState::beforeReportingState() {
   if(disabled_) 
     return EventHandlerResult::OK;
 
-  handleKeyswitchEvent(Key_LeftAlt, UNKNOWN_KEYSWITCH_LOCATION, IS_PRESSED | INJECTED);
+  handleKeyswitchEvent(Key_LeftAlt, KeyAddr(KeyAddr::invalid_state), IS_PRESSED | INJECTED);
   return EventHandlerResult::OK;
 }
 
